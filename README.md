@@ -5,7 +5,7 @@ FleetOps es un sistema de gestión de flotas orientado al sector de logística y
 
 El sistema resuelve cuatro necesidades críticas de una operación de transporte moderna:
 
-Monitoreo en tiempo real de vehículos: seguimiento continuo de posición, velocidad y estado operativo de cada unidad de la flota mediante ingestión de telemetría y notificación de eventos a los interesados (dashboards, alertas, otros servicios).
-Optimización de rutas y asignación de cargas: cálculo de rutas eficientes y asignación inteligente de cargas a vehículos disponibles, con algoritmos intercambiables según el contexto operativo (distancia, tiempo, restricciones de capacidad).
-Mantenimiento predictivo: análisis de variables de telemetría (kilometraje, horas de motor, patrones de uso) para anticipar fallas y generar alertas de mantenimiento antes de que ocurran averías.
-Integración con sistemas de navegación: comunicación con proveedores externos de mapas y navegación (Google Maps / OpenStreetMap), normalizando sus respuestas bajo una interfaz común del sistema.
+-Monitoreo en tiempo real de vehículos: seguimiento continuo de posición, velocidad y estado operativo de cada unidad de la flota mediante ingestión de telemetría y notificación de eventos a los interesados (dashboards, alertas, otros servicios).
+-Optimización de rutas y asignación de cargas: cálculo de rutas eficientes y asignación inteligente de cargas a vehículos disponibles, con algoritmos intercambiables según el contexto operativo (distancia, tiempo, restricciones de capacidad).
+-Mantenimiento predictivo: análisis de variables de telemetría (kilometraje, horas de motor, patrones de uso) para anticipar fallas y generar alertas de mantenimiento antes de que ocurran averías.
+-Integración con sistemas de navegación: comunicación con proveedores externos de mapas y navegación (Google Maps / OpenStreetMap), normalizando sus respuestas bajo una interfaz común del sistema.
