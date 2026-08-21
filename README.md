@@ -2,7 +2,7 @@
 
 ## FleetOps
 
-FleetOps es un sistema de gestión de flotas orientado al sector de logística y transporte, diseñado con **arquitectura de microservicios** siguiendo el enfoque de **arquitectura hexagonal** (puertos y adaptadores) en cada servicio. Esto permite aislar la lógica de negocio de los detalles de infraestructura, facilitando la mantenibilidad, las pruebas y la evolución independiente de cada componente.
+FleetOps es un sistema de gestión de flotas orientado al sector de logística y transporte, diseñado con arquitectura de microservicios siguiendo el enfoque de arquitectura hexagonal (puertos y adaptadores) en cada servicio. Esto permite aislar la lógica de negocio de los detalles de infraestructura, facilitando la mantenibilidad, las pruebas y la evolución independiente de cada componente.
 
 ### Necesidades que resuelve
 
