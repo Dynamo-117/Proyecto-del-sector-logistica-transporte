@@ -23,13 +23,13 @@ El sistema aborda cuatro necesidades críticas de una operación de transporte m
 ### Objetivo General
 Diseñar e implementar un sistema de gestión de flotas para el sector de logística y transporte, basado en una arquitectura de microservicios con enfoque hexagonal, que integre monitoreo en tiempo real, optimización de rutas, mantenimiento predictivo e integración con sistemas de navegación, aplicando patrones de diseño GoF, prácticas de calidad de software y un pipeline de integración y entrega continua.
 ### Objetivos Especificos
-- **  Diseñar una arquitectura de microservicios con enfoque hexagonal (puertos y adaptadores) que garantice bajo acoplamiento, alta cohesión y separación clara entre la lógica de negocio y la infraestructura de cada servicio.
-- **	Implementar un módulo de monitoreo en tiempo real que capture y notifique la posición, el estado y los eventos operativos de cada vehículo de la flota.
-- **	Desarrollar un módulo de optimización de rutas y asignación de cargas que permita comparar y seleccionar estrategias de cálculo según el contexto operativo.
-- **	Construir un módulo de mantenimiento predictivo capaz de generar alertas a partir del análisis de variables de telemetría de los vehículos.
-- **	Integrar el sistema con proveedores externos de navegación, normalizando sus respuestas bajo una interfaz común e independiente del proveedor.
-- **	Aplicar al menos ocho patrones de diseño GoF, con un mínimo de dos por categoría (creacional, estructural y de comportamiento), justificando su elección y su aporte a la mantenibilidad del sistema.
-- **	Documentar las decisiones arquitectónicas del proyecto mediante Architecture Decision Records (ADR) y diagramas UML que respalden el diseño implementado.
-- **	Establecer una suite de pruebas automatizadas con una cobertura de código igual o superior al 80%, que permita refactorizar el sistema con confianza.
-- **	Configurar un flujo de control de versiones con Git y un pipeline de integración y entrega continua (CI/CD) que automatice la construcción, las pruebas y el despliegue del sistema.
-- **	Implementar monitoreo y logging centralizado (Prometheus, Grafana y Loki) que permita observar el estado y el comportamiento del sistema en tiempo de ejecución.
+-  Diseñar una arquitectura de microservicios con enfoque hexagonal (puertos y adaptadores) que garantice bajo acoplamiento, alta cohesión y separación clara entre la lógica de negocio y la infraestructura de cada servicio.
+-   Implementar un módulo de monitoreo en tiempo real que capture y notifique la posición, el estado y los eventos operativos de cada vehículo de la flota.
+- 	Desarrollar un módulo de optimización de rutas y asignación de cargas que permita comparar y seleccionar estrategias de cálculo según el contexto operativo.
+- 	Construir un módulo de mantenimiento predictivo capaz de generar alertas a partir del análisis de variables de telemetría de los vehículos.
+- 	Integrar el sistema con proveedores externos de navegación, normalizando sus respuestas bajo una interfaz común e independiente del proveedor.
+- 	Aplicar al menos ocho patrones de diseño GoF, con un mínimo de dos por categoría (creacional, estructural y de comportamiento), justificando su elección y su aporte a la mantenibilidad del sistema.
+- 	Documentar las decisiones arquitectónicas del proyecto mediante Architecture Decision Records (ADR) y diagramas UML que respalden el diseño implementado.
+- 	Establecer una suite de pruebas automatizadas con una cobertura de código igual o superior al 80%, que permita refactorizar el sistema con confianza.
+- 	Configurar un flujo de control de versiones con Git y un pipeline de integración y entrega continua (CI/CD) que automatice la construcción, las pruebas y el despliegue del sistema.
+- 	Implementar monitoreo y logging centralizado (Prometheus, Grafana y Loki) que permita observar el estado y el comportamiento del sistema en tiempo de ejecución.
