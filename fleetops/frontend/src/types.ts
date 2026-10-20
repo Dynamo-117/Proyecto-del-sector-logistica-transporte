@@ -91,10 +91,20 @@ export interface RutaOptimizada {
 export type TipoAlerta = "CAMBIO_ACEITE" | "REVISION_GENERAL";
 export type EstadoAlerta = "ACTIVA" | "RESUELTA";
 
+export interface TipoMantenimientoInfo {
+  nombre: string;
+  descripcion: string;
+  recomendacion: string;
+  prioridad: "BAJA" | "MEDIA" | "ALTA";
+  intervalo_km: number;
+  intervalo_horas: number;
+}
+
 export interface AlertaMantenimiento {
   id: string;
   vehiculo_id: string;
   tipo: TipoAlerta;
+  tipo_info: TipoMantenimientoInfo;
   estado: EstadoAlerta;
   kilometraje_km: number;
   horas_motor: number;
@@ -121,4 +131,48 @@ export interface RutaCalculada {
   distancia_km: number;
   duracion_min: number;
   puntos: Coordenada[];
+}
+
+// --- route-optimization-service: plan con paradas (Composite) ---
+
+export interface ComponentePlan {
+  tipo: "tramo" | "trayecto";
+  nombre: string;
+  distancia_km: number;
+  cantidad_tramos: number;
+  hijos: ComponentePlan[];
+}
+
+export interface PlanRuta {
+  distancia_km: number;
+  cantidad_tramos: number;
+  paradas: string[];
+  nodos: string[];
+  estructura: ComponentePlan;
+}
+
+// --- api-gateway: resumen operativo (Facade) ---
+
+export interface ResumenOperativo {
+  flota: {
+    disponible: boolean;
+    total_vehiculos: number;
+    vehiculos_por_estado: Record<string, number>;
+    total_conductores: number;
+    conductores_disponibles: number;
+  };
+  rutas: { disponible: boolean; rutas_activas: number; distancia_total_km: number };
+  mantenimiento: { disponible: boolean; alertas_activas: number; vehiculos_con_alertas: number };
+  tracking: { disponible: boolean; en_movimiento: number; detenidos: number; sin_telemetria: number };
+  llamadas_internas: number;
+  generado_en: string;
+}
+
+// --- fleet-management-service: estado de la mensajeria (Proxy) ---
+
+export interface EstadoEventos {
+  conectado: boolean;
+  pendientes: number;
+  publicados: number;
+  descartados: number;
 }

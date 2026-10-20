@@ -7,6 +7,7 @@ import { ConductoresPage } from "./pages/ConductoresPage";
 import { LoginPage } from "./pages/LoginPage";
 import { MaintenancePage } from "./pages/MaintenancePage";
 import { NavigationPage } from "./pages/NavigationPage";
+import { ResumenPage } from "./pages/ResumenPage";
 import { RoutingPage } from "./pages/RoutingPage";
 import { TrackingPage } from "./pages/TrackingPage";
 import { VehiculosPage } from "./pages/VehiculosPage";
@@ -20,6 +21,7 @@ export function App() {
         <Route element={<ProtectedRoute />}>
           <Route element={<Layout />}>
             <Route index element={<Navigate to="/vehiculos" replace />} />
+            <Route path="/resumen" element={<ResumenPage />} />
             <Route path="/vehiculos" element={<VehiculosPage />} />
             <Route path="/conductores" element={<ConductoresPage />} />
             <Route path="/asignaciones" element={<AsignacionPage />} />

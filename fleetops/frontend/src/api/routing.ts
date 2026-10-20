@@ -1,5 +1,5 @@
 import { apiFetch } from "./client";
-import type { Conexion, Nodo, RutaOptimizada } from "../types";
+import type { Conexion, Nodo, PlanRuta, RutaOptimizada } from "../types";
 
 export function listarNodos(): Promise<Nodo[]> {
   return apiFetch<Nodo[]>("/routing/nodos");
@@ -45,4 +45,11 @@ export function solicitarAsignacion(payload: SolicitudCargaPayload): Promise<Rut
 
 export function listarRutas(): Promise<RutaOptimizada[]> {
   return apiFetch<RutaOptimizada[]>("/routing/rutas");
+}
+
+export function planificarRuta(paradas: string[]): Promise<PlanRuta> {
+  return apiFetch<PlanRuta>("/routing/planes", {
+    method: "POST",
+    body: JSON.stringify({ paradas }),
+  });
 }

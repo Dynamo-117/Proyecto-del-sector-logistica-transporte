@@ -27,5 +27,5 @@ async def registrar_lectura(
     return IngestaConAlertasResponse(
         kilometraje_km=lectura.kilometraje_km,
         horas_motor=lectura.horas_motor,
-        alertas_generadas=[AlertaResponse.model_validate(a) for a in alertas],
+        alertas_generadas=[AlertaResponse.desde_alerta(a) for a in alertas],
     )

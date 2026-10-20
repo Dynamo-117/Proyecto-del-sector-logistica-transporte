@@ -72,3 +72,8 @@ class UsuarioInactivo(DomainError):
 class TokenInvalido(DomainError):
     codigo = "TOKEN_INVALIDO"
     status_code = 401
+
+
+class ReporteNoSoportado(DomainError):
+    codigo = "REPORTE_NO_SOPORTADO"
+    status_code = 404

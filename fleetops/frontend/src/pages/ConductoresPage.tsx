@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from "react";
 import { ApiRequestError } from "../api/client";
 import { crearConductor, eliminarConductor, listarConductores } from "../api/conductores";
 import { useAuth } from "../auth/AuthContext";
+import { PanelReportes } from "../components/PanelReportes";
 import type { Conductor } from "../types";
 
 export function ConductoresPage() {
@@ -132,6 +133,8 @@ export function ConductoresPage() {
           </tbody>
         </table>
       )}
+
+      <PanelReportes tipos={[{ valor: "conductores", etiqueta: "Conductores" }]} />
     </div>
   );
 }

@@ -9,6 +9,7 @@ export function Header() {
       <div className="app-header__marca">FleetOps</div>
 
       <nav className="app-header__nav">
+        <NavLink to="/resumen">Resumen</NavLink>
         <NavLink to="/vehiculos">Vehiculos</NavLink>
         <NavLink to="/conductores">Conductores</NavLink>
         <NavLink to="/asignaciones">Asignar conductor</NavLink>

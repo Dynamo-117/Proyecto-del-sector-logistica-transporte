@@ -4,6 +4,8 @@ import { ApiRequestError } from "../api/client";
 import { listarConductores } from "../api/conductores";
 import { crearVehiculo, eliminarVehiculo, listarVehiculos } from "../api/vehiculos";
 import { useAuth } from "../auth/AuthContext";
+import { EstadoEventos } from "../components/EstadoEventos";
+import { PanelReportes } from "../components/PanelReportes";
 import type { Conductor, TipoVehiculo, Vehiculo } from "../types";
 
 const TIPOS: TipoVehiculo[] = ["CAMION", "FURGON", "MOTO", "VAN"];
@@ -122,6 +124,8 @@ export function VehiculosPage() {
         </form>
       )}
 
+      <EstadoEventos refrescarCon={vehiculos.length} />
+
       {error && <p className="mensaje-error">{error}</p>}
 
       {cargando ? (
@@ -171,6 +175,13 @@ export function VehiculosPage() {
           </tbody>
         </table>
       )}
+
+      <PanelReportes
+        tipos={[
+          { valor: "vehiculos", etiqueta: "Vehiculos" },
+          { valor: "resumen", etiqueta: "Resumen de la flota por estado" },
+        ]}
+      />
     </div>
   );
 }

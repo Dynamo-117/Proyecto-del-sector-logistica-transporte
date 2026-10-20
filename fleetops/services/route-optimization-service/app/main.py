@@ -9,6 +9,7 @@ from app.api.middleware import CorrelationIdMiddleware
 from app.api.routes.asignacion_routes import router as asignacion_router
 from app.api.routes.grafo_routes import router as grafo_router
 from app.api.routes.health_routes import router as health_router
+from app.api.routes.plan_routes import router as plan_router
 from app.application.use_cases.vehiculo_use_cases import (
     ActualizarEstadoVehiculoPorAsignacionConductor,
     SincronizarVehiculoDisponible,
@@ -89,6 +90,7 @@ def create_app() -> FastAPI:
     app.include_router(health_router)
     app.include_router(grafo_router)
     app.include_router(asignacion_router)
+    app.include_router(plan_router)
 
     return app
 

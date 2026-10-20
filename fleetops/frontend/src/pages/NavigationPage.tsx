@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from "react";
 import { ApiRequestError } from "../api/client";
-import { calcularRuta } from "../api/navigation";
+import { calcularRuta, type ProveedorNavegacion } from "../api/navigation";
 import type { RutaCalculada } from "../types";
 
 export function NavigationPage() {
@@ -8,7 +8,9 @@ export function NavigationPage() {
   const [lonOrigen, setLonOrigen] = useState("-74.07");
   const [latDestino, setLatDestino] = useState("6.25");
   const [lonDestino, setLonDestino] = useState("-75.56");
+  const [proveedor, setProveedor] = useState<ProveedorNavegacion>("osrm");
   const [resultado, setResultado] = useState<RutaCalculada | null>(null);
+  const [resultadoDe, setResultadoDe] = useState<{ proveedor: ProveedorNavegacion; ms: number } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [calculando, setCalculando] = useState(false);
 
@@ -17,11 +19,15 @@ export function NavigationPage() {
     setCalculando(true);
     setError(null);
     setResultado(null);
+    setResultadoDe(null);
+    const inicio = performance.now();
     try {
       const ruta = await calcularRuta(
         { latitud: Number(latOrigen), longitud: Number(lonOrigen) },
         { latitud: Number(latDestino), longitud: Number(lonDestino) },
+        proveedor,
       );
+      setResultadoDe({ proveedor, ms: Math.round(performance.now() - inicio) });
       setResultado(ruta);
     } catch (err) {
       setError(
@@ -36,10 +42,10 @@ export function NavigationPage() {
 
   return (
     <div className="pagina">
-      <h1>Calcular ruta (OSRM)</h1>
+      <h1>Calcular ruta</h1>
       <p className="subtitulo">
-        navigation-integration-service consulta el servidor publico de OSRM en tiempo real; requiere
-        salida a internet.
+        navigation-integration-service consulta en tiempo real el proveedor elegido (OSRM o
+        Valhalla) a traves de una misma interfaz; requiere salida a internet.
       </p>
 
       <form className="tarjeta formulario-inline" onSubmit={handleCalcular}>
@@ -83,6 +89,16 @@ export function NavigationPage() {
             required
           />
         </label>
+        <label>
+          Proveedor
+          <select
+            value={proveedor}
+            onChange={(e) => setProveedor(e.target.value as ProveedorNavegacion)}
+          >
+            <option value="osrm">OSRM</option>
+            <option value="valhalla">Valhalla</option>
+          </select>
+        </label>
         <button type="submit" disabled={calculando}>
           {calculando ? "Calculando..." : "Calcular ruta"}
         </button>
@@ -98,6 +114,12 @@ export function NavigationPage() {
             {resultado.duracion_min.toFixed(1)} min — {resultado.puntos.length} puntos en la
             geometria de la ruta.
           </p>
+          {resultadoDe && (
+            <p className="subtitulo">
+              Proveedor: {resultadoDe.proveedor === "osrm" ? "OSRM" : "Valhalla"} · Tiempo de
+              respuesta: {resultadoDe.ms} ms
+            </p>
+          )}
         </div>
       )}
     </div>

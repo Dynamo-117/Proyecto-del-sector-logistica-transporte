@@ -2,7 +2,7 @@
 
 Sistema de gestion de flotas para logistica y transporte, compuesto por microservicios independientes (arquitectura hexagonal por servicio).
 
-> **Fase actual: Fase 2 — implementacion funcional nucleo.** No se aplican ni se nombran patrones de diseno GoF todavia; eso corresponde a la Fase 3.
+> **Fase actual: Fase 3 — aplicacion de patrones de diseno GoF** sobre el codigo funcional de la Fase 2 (ver la seccion *Patrones de diseno aplicados*). Cada patron esta marcado en el codigo con comentarios `PATRON GOF`.
 
 ## Microservicios
 
@@ -52,6 +52,24 @@ uvicorn app.main:app --port 8080   # en services/api-gateway
 ```
 
 Luego todo el trafico de cliente puede ir a `http://localhost:8080` (ver el mapa de rutas en el README de `api-gateway`).
+
+## Patrones de diseno aplicados
+
+| Semana | Patron | Categoria | Servicio | Donde |
+|---|---|---|---|---|
+| 3 | Singleton | Creacional | los 6 servicios | `app/core/config.py` (`Settings`) |
+| 4 | Factory Method | Creacional | route-optimization | `infrastructure/db/repositorio_creador.py` |
+| 4 | Abstract Factory | Creacional | fleet-management | `infrastructure/db/repositorio_factory.py` |
+| 5 | Builder | Creacional | navigation-integration | `domain/ruta_builder.py`, `ruta_director.py` |
+| 7 | Adapter | Estructural | navigation-integration | `infrastructure/external/valhalla_adapter.py` |
+| 7 | Bridge | Estructural | fleet-management | `application/reportes/`, `infrastructure/reportes/` |
+| 8 | Composite | Estructural | route-optimization | `domain/itinerario.py` |
+| 8 | Decorator | Estructural | navigation-integration | `infrastructure/external/decoradores.py` |
+| 9 | Facade | Estructural | api-gateway | `application/facade/resumen_operativo_facade.py` (`GET /resumen`) |
+| 10 | Flyweight | Estructural | predictive-maintenance | `domain/tipos_mantenimiento.py` |
+| 10 | Proxy | Estructural | fleet-management | `infrastructure/messaging/publicador_proxy.py` |
+
+Cada patron tiene un script de demostracion (`python -m scripts.demo_<patron>` dentro del servicio; Singleton: `python scripts/demo_singleton.py` en la raiz) y sus propias pruebas. Los documentos y generadores de evidencias estan en `docs/`.
 
 ## Estructura del repositorio
 

@@ -32,3 +32,8 @@ class SinRutaEnGrafo(DomainError):
 class SinVehiculoDisponible(DomainError):
     codigo = "SIN_VEHICULO_DISPONIBLE"
     status_code = 409
+
+
+class PlanInvalido(DomainError):
+    codigo = "PLAN_INVALIDO"
+    status_code = 422

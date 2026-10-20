@@ -133,6 +133,8 @@ export function MaintenancePage() {
               <thead>
                 <tr>
                   <th>Tipo</th>
+                  <th>Prioridad</th>
+                  <th>Recomendacion</th>
                   <th>Kilometraje</th>
                   <th>Horas motor</th>
                   <th>Generada</th>
@@ -142,7 +144,17 @@ export function MaintenancePage() {
               <tbody>
                 {alertas.map((a) => (
                   <tr key={a.id}>
-                    <td>{a.tipo}</td>
+                    <td>
+                      <strong>{a.tipo_info.nombre}</strong>
+                      <br />
+                      <span className="subtitulo">cada {a.tipo_info.intervalo_km} km</span>
+                    </td>
+                    <td>
+                      <span className={`badge badge--prioridad-${a.tipo_info.prioridad.toLowerCase()}`}>
+                        {a.tipo_info.prioridad}
+                      </span>
+                    </td>
+                    <td>{a.tipo_info.recomendacion}</td>
                     <td>{a.kilometraje_km} km</td>
                     <td>{a.horas_motor} h</td>
                     <td>{new Date(a.generada_en).toLocaleString()}</td>
@@ -155,7 +167,7 @@ export function MaintenancePage() {
                 ))}
                 {alertas.length === 0 && (
                   <tr>
-                    <td colSpan={5}>Sin alertas activas para este vehiculo.</td>
+                    <td colSpan={7}>Sin alertas activas para este vehiculo.</td>
                   </tr>
                 )}
               </tbody>
