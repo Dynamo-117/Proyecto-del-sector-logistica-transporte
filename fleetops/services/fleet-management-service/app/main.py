@@ -8,10 +8,13 @@ from app.api.middleware import CorrelationIdMiddleware
 from app.api.routes.asignacion_routes import router as asignacion_router
 from app.api.routes.auth_routes import router as auth_router
 from app.api.routes.conductor_routes import router as conductor_router
+from app.api.routes.evento_routes import router as evento_router
 from app.api.routes.health_routes import router as health_router
+from app.api.routes.reporte_routes import router as reporte_router
 from app.api.routes.vehiculo_routes import router as vehiculo_router
 from app.core.config import get_settings
 from app.core.logging import configure_logging, get_logger
+from app.infrastructure.messaging.publicador_proxy import PublicadorEventosProxy
 from app.infrastructure.messaging.rabbitmq_publisher import RabbitMQPublisher
 
 settings = get_settings()
@@ -21,7 +24,9 @@ logger = get_logger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    publisher = RabbitMQPublisher(settings.rabbitmq_url, settings.rabbitmq_exchange)
+    publisher = PublicadorEventosProxy(
+        RabbitMQPublisher(settings.rabbitmq_url, settings.rabbitmq_exchange)
+    )
     await publisher.conectar()
     app.state.event_publisher = publisher
 
@@ -56,6 +61,8 @@ def create_app() -> FastAPI:
     app.include_router(vehiculo_router)
     app.include_router(conductor_router)
     app.include_router(asignacion_router)
+    app.include_router(reporte_router)
+    app.include_router(evento_router)
 
     return app
 

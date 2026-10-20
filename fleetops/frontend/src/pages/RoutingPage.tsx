@@ -5,9 +5,28 @@ import {
   crearNodo,
   listarNodos,
   listarRutas,
+  planificarRuta,
   solicitarAsignacion,
 } from "../api/routing";
-import type { Nodo, RutaOptimizada } from "../types";
+import type { ComponentePlan, Nodo, PlanRuta, RutaOptimizada } from "../types";
+
+function ArbolPlan({ componente }: { componente: ComponentePlan }) {
+  return (
+    <li>
+      <span className="arbol-plan__tipo">{componente.tipo}</span>
+      <strong>{componente.nombre}</strong> — {componente.distancia_km} km
+      {componente.tipo === "trayecto" &&
+        ` (${componente.cantidad_tramos} ${componente.cantidad_tramos === 1 ? "tramo" : "tramos"})`}
+      {componente.hijos.length > 0 && (
+        <ul>
+          {componente.hijos.map((hijo, i) => (
+            <ArbolPlan key={`${hijo.nombre}-${i}`} componente={hijo} />
+          ))}
+        </ul>
+      )}
+    </li>
+  );
+}
 
 export function RoutingPage() {
   const [nodos, setNodos] = useState<Nodo[]>([]);
@@ -27,6 +46,10 @@ export function RoutingPage() {
   const [destinoCarga, setDestinoCarga] = useState("");
   const [pesoCarga, setPesoCarga] = useState("");
   const [volumenCarga, setVolumenCarga] = useState("");
+
+  const [paradasPlan, setParadasPlan] = useState<string[]>([]);
+  const [paradaNueva, setParadaNueva] = useState("");
+  const [plan, setPlan] = useState<PlanRuta | null>(null);
 
   const [enviando, setEnviando] = useState(false);
 
@@ -102,6 +125,26 @@ export function RoutingPage() {
       setError(
         err instanceof ApiRequestError ? err.message : "No se pudo solicitar la asignacion",
       );
+    } finally {
+      setEnviando(false);
+    }
+  }
+
+  function handleAgregarParada() {
+    if (!paradaNueva) return;
+    setParadasPlan((actuales) => [...actuales, paradaNueva]);
+    setParadaNueva("");
+    setPlan(null);
+  }
+
+  async function handlePlanificar() {
+    setEnviando(true);
+    setError(null);
+    try {
+      setPlan(await planificarRuta(paradasPlan));
+    } catch (err) {
+      setPlan(null);
+      setError(err instanceof ApiRequestError ? err.message : "No se pudo planificar la ruta");
     } finally {
       setEnviando(false);
     }
@@ -267,6 +310,59 @@ export function RoutingPage() {
           Requiere al menos un vehiculo DISPONIBLE (creado en Vehiculos, ya sincronizado por
           eventos).
         </p>
+      </div>
+
+      <div className="tarjeta">
+        <h2>Plan de ruta con paradas</h2>
+        <div className="formulario-inline">
+          <label>
+            Siguiente parada
+            <select value={paradaNueva} onChange={(e) => setParadaNueva(e.target.value)}>
+              <option value="">Selecciona</option>
+              {nodos.map((n) => (
+                <option key={n.id} value={n.id}>
+                  {n.nombre}
+                </option>
+              ))}
+            </select>
+          </label>
+          <button className="boton-secundario" onClick={handleAgregarParada} disabled={!paradaNueva}>
+            Agregar parada
+          </button>
+          <button
+            className="boton-secundario"
+            onClick={() => {
+              setParadasPlan((actuales) => actuales.slice(0, -1));
+              setPlan(null);
+            }}
+            disabled={paradasPlan.length === 0}
+          >
+            Quitar ultima
+          </button>
+          <button onClick={handlePlanificar} disabled={enviando || paradasPlan.length < 2}>
+            Calcular plan
+          </button>
+        </div>
+        <p className="paradas">
+          {paradasPlan.length === 0
+            ? "Agrega al menos dos paradas, en el orden en que se visitaran."
+            : paradasPlan.map((id, i) => (
+                <span key={`${id}-${i}`} className="badge badge--en_ruta">
+                  {i + 1}. {nombreNodoPorId(id)}
+                </span>
+              ))}
+        </p>
+        {plan && (
+          <>
+            <p>
+              <strong>{plan.distancia_km} km</strong> en {plan.cantidad_tramos} tramos:{" "}
+              {plan.paradas.join(" -> ")}
+            </p>
+            <ul className="arbol-plan">
+              <ArbolPlan componente={plan.estructura} />
+            </ul>
+          </>
+        )}
       </div>
 
       <div className="tarjeta">

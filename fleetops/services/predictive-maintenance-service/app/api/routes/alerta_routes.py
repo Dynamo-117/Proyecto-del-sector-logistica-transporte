@@ -23,7 +23,7 @@ async def listar_alertas_activas(
     use_case: Annotated[ListarAlertasActivas, Depends(get_listar_alertas_activas)],
 ) -> list[AlertaResponse]:
     alertas = await use_case.ejecutar(vehiculo_id)
-    return [AlertaResponse.model_validate(a) for a in alertas]
+    return [AlertaResponse.desde_alerta(a) for a in alertas]
 
 
 @router.post(
@@ -37,4 +37,4 @@ async def completar_alerta(
     use_case: Annotated[MarcarMantenimientoRealizado, Depends(get_marcar_mantenimiento_realizado)],
 ) -> AlertaResponse:
     alerta = await use_case.ejecutar(alerta_id)
-    return AlertaResponse.model_validate(alerta)
+    return AlertaResponse.desde_alerta(alerta)

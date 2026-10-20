@@ -9,7 +9,10 @@ from app.api.routes.health_routes import router as health_router
 from app.api.routes.ruta_routes import router as ruta_router
 from app.core.config import get_settings
 from app.core.logging import configure_logging, get_logger
+from app.infrastructure.external.decoradores import decorar_proveedor
 from app.infrastructure.external.osrm_client import OSRMClient
+from app.infrastructure.external.valhalla_adapter import ValhallaNavigationAdapter
+from app.infrastructure.external.valhalla_api import ValhallaApi
 
 settings = get_settings()
 configure_logging(settings.log_level)
@@ -18,13 +21,25 @@ logger = get_logger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    provider = OSRMClient(settings.osrm_base_url, timeout=settings.osrm_timeout_segundos)
-    app.state.navigation_provider = provider
+    proveedores = {
+        "osrm": decorar_proveedor(
+            OSRMClient(settings.osrm_base_url, timeout=settings.osrm_timeout_segundos), "osrm"
+        ),
+        "valhalla": decorar_proveedor(ValhallaNavigationAdapter(ValhallaApi()), "valhalla"),
+    }
+    app.state.navigation_providers = proveedores
+    app.state.navigation_provider = proveedores["osrm"]
 
-    logger.info("servicio_iniciado", app=settings.app_name, osrm_base_url=settings.osrm_base_url)
+    logger.info(
+        "servicio_iniciado",
+        app=settings.app_name,
+        osrm_base_url=settings.osrm_base_url,
+        proveedores=list(proveedores),
+    )
     yield
 
-    await provider.cerrar()
+    for proveedor in proveedores.values():
+        await proveedor.cerrar()
     logger.info("servicio_detenido", app=settings.app_name)
 
 

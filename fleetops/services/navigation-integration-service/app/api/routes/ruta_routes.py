@@ -15,7 +15,10 @@ router = APIRouter(prefix="/rutas", tags=["rutas"])
     response_model=RutaResponse,
     status_code=status.HTTP_200_OK,
     summary="Calcular ruta entre dos puntos",
-    description="Interfaz propia y normalizada sobre el proveedor externo de navegacion (OSRM).",
+    description=(
+        "Interfaz propia y normalizada sobre el proveedor externo de navegacion. "
+        "Por defecto usa OSRM; con ?proveedor=valhalla usa Valhalla (via adaptador)."
+    ),
 )
 async def calcular_ruta(
     payload: CalcularRutaRequest,

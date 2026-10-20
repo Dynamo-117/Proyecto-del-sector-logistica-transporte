@@ -8,6 +8,7 @@ from app.api.error_handlers import register_exception_handlers
 from app.api.middleware import CorrelationIdMiddleware, JWTAuthMiddleware
 from app.api.routes.health_routes import router as health_router
 from app.api.routes.proxy_routes import router as proxy_router
+from app.api.routes.resumen_routes import router as resumen_router
 from app.core.config import get_settings
 from app.core.logging import configure_logging, get_logger
 from app.infrastructure.external.httpx_proxy_client import HttpxProxyClient
@@ -56,10 +57,11 @@ def create_app() -> FastAPI:
 
     register_exception_handlers(app)
 
-    # Orden importa: /health y /ready deben registrarse antes que el catch-all
-    # del proxy, que si no las capturaria como si "health"/"ready" fueran el
-    # prefijo de un microservicio.
+    # Orden importa: /health, /ready y /resumen deben registrarse antes que el
+    # catch-all del proxy, que si no los capturaria como si fueran el prefijo
+    # de un microservicio.
     app.include_router(health_router)
+    app.include_router(resumen_router)
     app.include_router(proxy_router)
 
     return app
